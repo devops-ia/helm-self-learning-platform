@@ -1,0 +1,14 @@
+{
+  "name": "helm-self-learning-platform",
+  "version": "1.0.0",
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "repositoryUrl": "https://github.com/devops-ia/helm-self-learning-platform.git",
+    "plugins": [
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github"
+    ]
+  }
+}

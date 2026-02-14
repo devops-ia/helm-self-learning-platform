@@ -1,0 +1,54 @@
+Thank you for installing {{ .Chart.Name }}!
+
+Your release is named {{ .Release.Name }}.
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }} -n {{ .Release.Namespace }}
+  $ helm get all {{ .Release.Name }} -n {{ .Release.Namespace }}
+
+{{- if .Values.ingress.enabled }}
+
+The application is accessible via Ingress at:
+{{- range .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}
+{{- end }}
+
+{{- else if eq .Values.service.type "LoadBalancer" }}
+
+Get the application URL by running:
+
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "self-learning-platform.fullname" . }} --template "{{ "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}" }}")
+  echo http://$SERVICE_IP:{{ .Values.service.port }}
+
+NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+
+{{- else if eq .Values.service.type "ClusterIP" }}
+
+The application is accessible within the cluster at:
+
+  {{ include "self-learning-platform.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.service.port }}
+
+To forward the port to localhost, run:
+
+  kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ include "self-learning-platform.fullname" . }} 8080:{{ .Values.service.port }}
+
+Then access the application at:
+
+  http://localhost:8080
+
+{{- end }}
+
+{{- if .Values.autoscaling.enabled }}
+
+Horizontal Pod Autoscaler is enabled:
+  - Min replicas: {{ .Values.autoscaling.minReplicas }}
+  - Max replicas: {{ .Values.autoscaling.maxReplicas }}
+{{- end }}
+
+{{- if .Values.podDisruptionBudget.enabled }}
+
+Pod Disruption Budget is enabled to ensure high availability during voluntary disruptions.
+{{- end }}
+
+For more information, visit: {{ .Chart.Home }}

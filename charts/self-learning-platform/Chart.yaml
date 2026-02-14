@@ -1,0 +1,19 @@
+apiVersion: v2
+name: self-learning-platform
+description: A Helm chart to deploy Self Learning Platform
+type: application
+maintainers:
+  - name: ialejandro
+    email: hello@ialejandro.rocks
+    url: https://ialejandro.rocks
+sources:
+  - https://github.com/devops-ia/helm-self-learning-platform
+  - https://github.com/devops-ia/self-learning-platform
+version: 1.0.0
+appVersion: 0.0.1
+home: https://github.com/devops-ia/self-learning-platform
+keywords:
+  - self-learning
+  - platform
+  - education
+  - learning

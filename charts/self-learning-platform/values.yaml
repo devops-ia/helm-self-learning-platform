@@ -1,0 +1,409 @@
+# -- Global section contains configuration options that are applied to all services
+global:
+  # -- Specifies the registry to pull images from. Leave empty for the default registry
+  imageRegistry: ""
+  # -- Specifies the secrets to use for pulling images from private registries
+  imagePullSecrets: []
+
+# -- String to fully override self-learning-platform.fullname template
+fullnameOverride: ""
+
+# -- String to partially override self-learning-platform.fullname template
+nameOverride: ""
+
+# -- Number of replicas for the service
+replicaCount: 2
+
+# -- Image registry configuration
+image:
+  # -- Repository of the image
+  repository: self-learning-platform
+  # -- Pull policy for the image
+  pullPolicy: IfNotPresent
+  # -- Overrides the image tag whose default is the chart appVersion
+  tag: ""
+
+# -- Specifies the secrets to use for pulling images from private registries
+imagePullSecrets: []
+
+# -- Configure deployment strategy
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+
+# -- ServiceAccount configuration
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- Name of the service account to use
+  name: ""
+  # -- Disable automatic mounting of service account token
+  automountServiceAccountToken: false
+
+# -- Environment variables to configure application
+env:
+  NODE_ENV: production
+  PORT: "3000"
+  HOST: "0.0.0.0"
+  # BASE_URL: https://learning.example.com
+  # SESSION_SECRET: ""  # REQUIRED: Generate with: openssl rand -base64 32
+  # SESSION_TTL: "604800"  # 7 days
+  # DB_URL: /app/data/learning-platform.db
+  # ADMIN_EMAIL: admin@devopslab.local
+  # ADMIN_PASSWORD: ""  # REQUIRED: Set strong password
+  # AUTH_ANONYMOUS_ENABLED: "true"
+  # AUTH_EMAIL_ENABLED: "true"
+  # TOTP_ISSUER: "DevOps Learning Platform"
+  # NEXT_PUBLIC_REGISTRATION_ENABLED: "true"
+  # NEXT_PUBLIC_DEMO_MODE: "false"
+  # OAuth Google
+  # OAUTH_GOOGLE_CLIENT_ID: ""
+  # OAUTH_GOOGLE_CLIENT_SECRET: ""
+  # OAUTH_GOOGLE_CALLBACK: /api/auth/oauth/google/callback
+  # OAuth GitHub
+  # OAUTH_GITHUB_CLIENT_ID: ""
+  # OAUTH_GITHUB_CLIENT_SECRET: ""
+  # OAUTH_GITHUB_CALLBACK: /api/auth/oauth/github/callback
+  # OAuth Azure
+  # OAUTH_AZURE_CLIENT_ID: ""
+  # OAUTH_AZURE_CLIENT_SECRET: ""
+  # OAUTH_AZURE_TENANT: common
+  # OAUTH_AZURE_CALLBACK: /api/auth/oauth/azure/callback
+  # SMTP Configuration
+  # SMTP_HOST: ""
+  # SMTP_PORT: "587"
+  # SMTP_USER: ""
+  # SMTP_PASS: ""
+  # SMTP_FROM: noreply@devopslab.local
+  # SMTP_SECURE: "false"
+
+# -- Variables from configMap
+envFromConfigMap: {}
+  # MY_VARIABLE:
+  #   name: <name-configmap>
+  #   key: key
+
+# -- Variables from secrets
+envFromSecrets: {}
+  # MY_VARIABLE:
+  #   name: <name-secret>
+  #   key: secret_key
+
+# -- Load all variables from files
+envFromFiles: []
+  # - secretRef:
+  #     name: <name-secret>
+  # - configMapRef:
+  #     name: <name-configmap>
+
+# -- Secrets values to create credentials
+secrets: []
+  # - name: secret-name
+  #   data:
+  #     my.key: |-
+  #       my-content
+  #     my_var: my-value
+
+# -- ConfigMap values to create configuration files
+configMaps: []
+  # - name: configmap-name
+  #   data:
+  #     my.key: |-
+  #       my-content
+  #     my_var: my-value
+
+# -- Configure init containers
+initContainers: []
+  # - name: init-container
+  #   image: busybox
+  #   command: ['sh', '-c', 'echo "Initializing..."']
+
+# -- Configure container args
+args: []
+
+# -- Configure container command
+command: []
+
+# -- Kubernetes service configuration
+service:
+  # -- Service type
+  type: ClusterIP
+  # -- Service port
+  port: 80
+  # -- Pod target port
+  targetPort: 3000
+  # -- Protocol for the service port
+  protocol: TCP
+  # -- Name for the service port
+  portName: http
+  # -- Application protocol
+  appProtocol: HTTP
+  # -- Additional labels for the service
+  labels: {}
+  # -- Annotations for the service
+  annotations: {}
+  # -- Extra service ports
+  extraPorts: []
+    # - name: metrics
+    #   port: 9090
+    #   targetPort: 9090
+    #   protocol: TCP
+    #   appProtocol: HTTP
+
+# -- NetworkPolicy configuration
+networkPolicy:
+  # -- Enable or disable NetworkPolicy
+  enabled: false
+  # -- Policy types
+  policyTypes: []
+    # - Ingress
+    # - Egress
+  ingress: []
+    # - from:
+    #   - namespaceSelector:
+    #       matchLabels:
+    #         name: ingress-nginx
+    #   ports:
+    #   - protocol: TCP
+    #     port: 8080
+  egress: []
+    # - to:
+    #   - namespaceSelector: {}
+    #   ports:
+    #   - protocol: TCP
+    #     port: 443
+
+# -- ServiceMonitor for Prometheus Operator
+serviceMonitor:
+  # -- Enable ServiceMonitor
+  enabled: false
+  # -- Scrape interval
+  interval: 30s
+  # -- Scrape timeout
+  scrapeTimeout: 10s
+  # -- Metric relabeling
+  metricRelabelings: []
+  # -- Relabeling
+  relabelings: []
+
+# -- Lifecycle hooks
+lifecycle: {}
+  # preStop:
+  #   exec:
+  #     command: ["sh", "-c", "sleep 10"]
+
+# -- Termination grace period in seconds
+terminationGracePeriodSeconds: 30
+
+# -- Liveness probe configuration
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 15
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
+
+# -- Custom liveness probe
+livenessProbeCustom: {}
+
+# -- Readiness probe configuration
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 3
+  successThreshold: 1
+
+# -- Custom readiness probe
+readinessProbeCustom: {}
+
+# -- Startup probe configuration
+startupProbe:
+  enabled: true
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 30
+  successThreshold: 1
+
+# -- Custom startup probe
+startupProbeCustom: {}
+
+# -- Pod annotations
+podAnnotations: {}
+
+# -- Pod labels
+podLabels: {}
+
+# -- Pod security context
+podSecurityContext:
+  fsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Container security context
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+
+# -- Ingress configuration
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: self-learning-platform.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+    # - secretName: self-learning-platform-tls
+    #   hosts:
+    #     - self-learning-platform.local
+
+# -- Resource limits and requests
+resources:
+  requests:
+    cpu: "200m"
+    memory: "512Mi"
+  limits:
+    memory: "1Gi"
+
+# -- Pod Disruption Budget
+podDisruptionBudget:
+  enabled: false
+  maxUnavailable: 1
+  # minAvailable: 1
+
+# -- Horizontal Pod Autoscaler
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+  # -- HPA scaling behavior
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 15
+        - type: Pods
+          value: 1
+          periodSeconds: 60
+      selectPolicy: Min
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+        - type: Pods
+          value: 2
+          periodSeconds: 60
+      selectPolicy: Max
+
+# -- Additional volumes
+volumes:
+  - name: tmp
+    emptyDir: {}
+  - name: data
+    emptyDir: {}
+  # For production with persistence, use PVC:
+  # - name: data
+  #   persistentVolumeClaim:
+  #     claimName: self-learning-platform-data
+
+# -- Additional volume mounts
+volumeMounts:
+  - name: tmp
+    mountPath: /tmp
+  - name: data
+    mountPath: /app/data
+
+# -- Persistence configuration for SQLite database
+persistence:
+  # -- Enable persistent volume for database
+  enabled: false
+  # -- Storage class name
+  storageClassName: ""
+  # -- Access mode
+  accessMode: ReadWriteOnce
+  # -- Storage size
+  size: 1Gi
+  # -- Annotations for PVC
+  annotations: {}
+  # -- Use existing PVC
+  existingClaim: ""
+
+# -- Node selector
+nodeSelector: {}
+
+# -- Tolerations
+tolerations: []
+
+# -- Affinity rules
+affinity: {}
+
+# -- Topology spread constraints
+topologySpreadConstraints: []
+  # - maxSkew: 1
+  #   topologyKey: topology.kubernetes.io/zone
+  #   whenUnsatisfiable: DoNotSchedule
+  # - maxSkew: 1
+  #   topologyKey: kubernetes.io/hostname
+  #   whenUnsatisfiable: ScheduleAnyway
+
+# -- DNS configuration
+dnsConfig: {}
+  # nameservers:
+  #   - 1.1.1.1
+  # searches:
+  #   - ns1.svc.cluster.local
+  # options:
+  #   - name: ndots
+  #     value: "2"
+
+# -- DNS policy
+dnsPolicy: ClusterFirst
+
+# -- Init job configuration (runs db:seed on install/upgrade)
+initJob:
+  # -- Enable init job
+  enabled: true
+  # -- Seconds after job finishes before deletion
+  ttlSecondsAfterFinished: 300
+  # -- Number of retries before marking job as failed
+  backoffLimit: 3
+  # -- Resource limits for init job
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      memory: "512Mi"

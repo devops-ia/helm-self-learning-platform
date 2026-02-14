@@ -1,0 +1,17 @@
+sources:
+  self-learning-platform:
+    kind: dockerimage
+    spec:
+      image: devopsiaci/self-learning-platform
+      architecture: linux/amd64
+      versionFilter:
+        kind: semver
+conditions: {}
+targets:
+  self-learning-platform:
+    name: bump chart appversion
+    kind: yaml
+    spec:
+      file: charts/self-learning-platform/Chart.yaml
+      key: $.appVersion
+    sourceid: self-learning-platform
