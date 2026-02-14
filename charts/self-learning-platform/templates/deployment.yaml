@@ -77,7 +77,7 @@ spec:
             {{- if .Values.livenessProbeCustom }}
             {{- toYaml .Values.livenessProbeCustom | nindent 12 }}
             {{- else }}
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- omit .Values.livenessProbe "enabled" | toYaml | nindent 12 }}
             {{- end }}
           {{- end }}
           {{- if .Values.readinessProbe.enabled }}
@@ -85,7 +85,7 @@ spec:
             {{- if .Values.readinessProbeCustom }}
             {{- toYaml .Values.readinessProbeCustom | nindent 12 }}
             {{- else }}
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- omit .Values.readinessProbe "enabled" | toYaml | nindent 12 }}
             {{- end }}
           {{- end }}
           {{- if .Values.startupProbe.enabled }}
@@ -93,7 +93,7 @@ spec:
             {{- if .Values.startupProbeCustom }}
             {{- toYaml .Values.startupProbeCustom | nindent 12 }}
             {{- else }}
-            {{- toYaml .Values.startupProbe | nindent 12 }}
+            {{- omit .Values.startupProbe "enabled" | toYaml | nindent 12 }}
             {{- end }}
           {{- end }}
           {{- if .Values.envFromFiles }}
@@ -150,7 +150,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ if $.Values.persistence.existingClaim }}{{ $.Values.persistence.existingClaim }}{{ else }}{{ include "self-learning-platform.fullname" $ }}-data{{ end }}
         {{- else }}
-        {{- toYaml $volume | nindent 8 }}
+        {{- list $volume | toYaml | nindent 8 }}
         {{- end }}
         {{- end }}
         {{- end }}

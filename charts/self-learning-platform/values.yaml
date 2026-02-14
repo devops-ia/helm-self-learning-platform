@@ -17,7 +17,7 @@ replicaCount: 2
 # -- Image registry configuration
 image:
   # -- Repository of the image
-  repository: self-learning-platform
+  repository: devopsiaci/self-learning-platform
   # -- Pull policy for the image
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion

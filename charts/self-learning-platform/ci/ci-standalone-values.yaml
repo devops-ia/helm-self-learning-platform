@@ -1,6 +1,3 @@
-image:
-  repository: self-learning-platform
-
 env:
   NODE_ENV: production
   PORT: "3000"
@@ -14,24 +11,13 @@ env:
   NEXT_PUBLIC_REGISTRATION_ENABLED: "true"
   NEXT_PUBLIC_DEMO_MODE: "false"
   DB_URL: /app/data/learning-platform.db
-
-envFromSecrets:
-  SESSION_SECRET:
-    name: self-learning-platform-secrets
-    key: session-secret
-  ADMIN_PASSWORD:
-    name: self-learning-platform-secrets
-    key: admin-password
+  SESSION_SECRET: "PWgNAY+AIQUi3tSnVqPo1jx4B3/rg+M3tkIF/A1ltKI="
+  ADMIN_PASSWORD: "adminpassword"
 
 service:
   type: ClusterIP
   port: 80
   targetPort: 3000
-
-persistence:
-  enabled: true
-  accessMode: ReadWriteOnce
-  size: 10Gi
 
 podSecurityContext:
   fsGroup: 1000
@@ -57,7 +43,7 @@ resources:
 
 autoscaling:
   enabled: true
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 80
@@ -82,10 +68,6 @@ autoscaling:
           value: 2
           periodSeconds: 60
       selectPolicy: Max
-
-podDisruptionBudget:
-  enabled: true
-  maxUnavailable: 1
 
 ingress:
   enabled: true
