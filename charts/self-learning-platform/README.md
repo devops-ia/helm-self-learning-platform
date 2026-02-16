@@ -91,9 +91,9 @@ helm show values self-learning-platform/self-learning-platform
 | global | object | `{"imagePullSecrets":[],"imageRegistry":""}` | Global section contains configuration options that are applied to all services |
 | global.imagePullSecrets | list | `[]` | Specifies the secrets to use for pulling images from private registries |
 | global.imageRegistry | string | `""` | Specifies the registry to pull images from. Leave empty for the default registry |
-| image | object | `{"pullPolicy":"IfNotPresent","repository":"self-learning-platform","tag":""}` | Image registry configuration |
+| image | object | `{"pullPolicy":"IfNotPresent","repository":"devopsiaci/self-learning-platform","tag":""}` | Image registry configuration |
 | image.pullPolicy | string | `"IfNotPresent"` | Pull policy for the image |
-| image.repository | string | `"self-learning-platform"` | Repository of the image |
+| image.repository | string | `"devopsiaci/self-learning-platform"` | Repository of the image |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
 | imagePullSecrets | list | `[]` | Specifies the secrets to use for pulling images from private registries |
 | ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"self-learning-platform.local","paths":[{"path":"/","pathType":"Prefix"}]}],"tls":[]}` | Ingress configuration |
