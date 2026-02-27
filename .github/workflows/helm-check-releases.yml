@@ -1,4 +1,4 @@
-name: Check new releases
+name: Helm Check Releases
 
 on:
   workflow_dispatch:
@@ -6,7 +6,8 @@ on:
     - cron: '0 0 * * *' # every day
 
 permissions:
-  contents: write
+  contents: read
+  pull-requests: write
 
 jobs:
   check-and-update-self-learning-platform:
