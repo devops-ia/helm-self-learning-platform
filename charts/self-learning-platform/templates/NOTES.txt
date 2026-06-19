@@ -7,7 +7,19 @@ To learn more about the release, try:
   $ helm status {{ .Release.Name }} -n {{ .Release.Namespace }}
   $ helm get all {{ .Release.Name }} -n {{ .Release.Namespace }}
 
-{{- if .Values.ingress.enabled }}
+{{- if .Values.gateway.enabled }}
+
+The application is accessible via Gateway API at:
+{{- if .Values.gateway.hostnames }}
+{{- range .Values.gateway.hostnames }}
+  {{ . }}
+{{- end }}
+{{- else }}
+  (HTTPRoute - no hostnames configured)
+{{- end }}
+  (Gateway API / HTTPRoute)
+
+{{- else if .Values.ingress.enabled }}
 
 The application is accessible via Ingress at:
 {{- range .Values.ingress.hosts }}
