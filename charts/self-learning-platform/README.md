@@ -88,6 +88,16 @@ helm show values self-learning-platform/self-learning-platform
 | envFromFiles | list | `[]` | Load all variables from files |
 | envFromSecrets | object | `{}` | Variables from secrets |
 | fullnameOverride | string | `""` | String to fully override self-learning-platform.fullname template |
+| gateway | object | `{"annotations":{},"className":"","create":false,"enabled":false,"filters":[],"hostnames":[],"labels":{},"listeners":[{"name":"http","port":80,"protocol":"HTTP"}],"parentRefs":[{"name":"","namespace":""}],"rules":[{"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]}` | Gateway API configuration (Gateway + HTTPRoute resources) </br> Ref: https://gateway-api.sigs.k8s.io/ </br> Requires Gateway API CRDs installed in the cluster. </br> TLS is configured at the Gateway listener level, not the HTTPRoute. |
+| gateway.annotations | object | `{}` | Annotations for the HTTPRoute |
+| gateway.className | string | `""` | GatewayClass name — required when create is true |
+| gateway.create | bool | `false` | Set to false to attach to a pre-existing Gateway via parentRefs. |
+| gateway.filters | list | `[]` | Additional request/response filters |
+| gateway.hostnames | list | `[]` | Hostnames to match (leave empty to match all hostnames) |
+| gateway.labels | object | `{}` | Additional labels for the HTTPRoute |
+| gateway.listeners | list | `[{"name":"http","port":80,"protocol":"HTTP"}]` | Gateway listeners — used only when create is true |
+| gateway.parentRefs | list | `[{"name":"","namespace":""}]` | Ignored when create is true (auto-wired to the chart-managed Gateway). |
+| gateway.rules | list | `[{"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]` | Route rules (backendRefs are auto-generated from service config) |
 | global | object | `{"imagePullSecrets":[],"imageRegistry":""}` | Global section contains configuration options that are applied to all services |
 | global.imagePullSecrets | list | `[]` | Specifies the secrets to use for pulling images from private registries |
 | global.imageRegistry | string | `""` | Specifies the registry to pull images from. Leave empty for the default registry |
