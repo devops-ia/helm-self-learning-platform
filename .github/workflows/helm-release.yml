@@ -20,6 +20,7 @@ jobs:
       packages: write
       id-token: write
     uses: devops-ia/.github/.github/workflows/helm-release.yml@main
+    secrets: inherit
     with:
       chart_name: self-learning-platform
       charts_dir: charts
